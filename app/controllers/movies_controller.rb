@@ -16,7 +16,8 @@ class MoviesController < ApplicationController
       elsif params[:ratings]
         @ratings_filtered=params[:ratings].keys
         @movies=Movie.where(rating: @ratings_filtered)
-      else  
+      else
+        @ratings_filtered=@distinct_ratings
         @movies = Movie.all
       end
       
