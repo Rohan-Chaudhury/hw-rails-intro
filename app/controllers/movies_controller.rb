@@ -7,11 +7,15 @@ class MoviesController < ApplicationController
     end
   
     def index
+      @distinct_ratings=Movie.distinct.pluck("rating")
       @get_sorting_type=params[:sort_type]
       if @get_sorting_type=="Movie Title"
         @movies=Movie.order("title")
       elsif @get_sorting_type=="Release Date"
         @movies=Movie.order("release_date")
+      elsif params[:ratings]
+        @ratings_filtered=params[:ratings].keys
+        @movies=Movie.where(rating: @ratings_filtered).all
       else  
         @movies = Movie.all
       end
