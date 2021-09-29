@@ -13,3 +13,17 @@
  *= require_tree .
  *= require_self
  */
+
+
+.no_decoration{
+    
+    color: inherit;
+    
+    text-decoration:none; 
+}
+
+
+.hilite{
+    background-color: #FFAE42 ;    
+    
+}
