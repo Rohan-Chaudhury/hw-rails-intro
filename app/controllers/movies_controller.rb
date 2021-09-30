@@ -8,18 +8,44 @@ class MoviesController < ApplicationController
   
     def index
       @distinct_ratings=Movie.distinct.pluck("rating")
+      @new_movies=Movie
       @get_sorting_type=params[:sort_type]
-      if @get_sorting_type=="Movie Title"
-        @movies=Movie.order("title")
-      elsif @get_sorting_type=="Release Date"
-        @movies=Movie.order("release_date")
-      elsif params[:ratings]
-        @ratings_filtered=params[:ratings].keys
-        @movies=Movie.where(rating: @ratings_filtered)
+      
+  
+      if params[:ratings]
+        @ratings_filtered=params[:ratings]
+        @ratings_filtered_keys=@ratings_filtered.keys
+        @new_movies=@new_movies.where(rating: @ratings_filtered_keys)
+        session[:ratings]=params[:ratings]
+      elsif session[:ratings]
+        @ratings_filtered=session[:ratings]
+        @ratings_filtered_keys=@ratings_filtered.keys
+        @new_movies=@new_movies.where(rating: @ratings_filtered_keys)   
       else
         @ratings_filtered=@distinct_ratings
-        @movies = Movie.all
       end
+      
+      if @get_sorting_type
+        @new_movies=@new_movies.all.order(@get_sorting_type)
+        session[:sort_type]=@get_sorting_type
+      elsif session[:sort_type]
+        @get_sorting_type=session[:sort_type]
+        @new_movies=@new_movies.all.order(@get_sorting_type)
+      else
+        @new_movies = @new_movies.all
+      end
+      
+      if (session[:ratings] or sessions[:sort_type]) and (!params[:sort_type] and !params[:ratings])
+        if session[:ratings]
+          params[:ratings]=session[:ratings]
+        end
+        if session[:sort_type]
+          params[:sort_type]=session[:sort_type]
+        end
+        redirect_to movies_path(params)      
+      end
+        
+      @movies=@new_movies
       
     end
   

@@ -7,7 +7,7 @@
   <span class=text_bold>Ratings :</span>
   <% @distinct_ratings.each do |rating| %>
    <%= rating %>
-   <%= check_box_tag "ratings[#{rating}]" , 1,@ratings_filtered.include?(rating) , :id => "ratings_#{rating}" %>
+   <%= check_box_tag "ratings[#{rating}]" , 1, if @ratings_filtered; @ratings_filtered.include?(rating) end, :id => "ratings_#{rating}" %>
    <%= "    " %>
   <% end %>
   <%= submit_tag 'Refresh', 'id'=>"ratings_submit" ,:class => 'btn btn-primary' %>
@@ -16,9 +16,9 @@
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th class="<%='text-info hilite' if @get_sorting_type == "Movie Title"%>"><%= link_to 'Movie Title', movies_path(:sort_type => "Movie Title"), :class => 'no_decoration', :id => 'title_header' %></th>
+      <th class="<%='text-info hilite' if @get_sorting_type == "title"%>"><%= link_to 'Movie Title', movies_path(:sort_type => "title"), :class => 'no_decoration', :id => 'title_header' %></th>
       <th>Rating</th>
-      <th  class="<%='text-info hilite' if @get_sorting_type == "Release Date"%>"><%= link_to 'Release Date', movies_path(:sort_type => "Release Date"), :class => 'no_decoration',:id => 'release_date_header'%></th>
+      <th  class="<%='text-info hilite' if @get_sorting_type == "release_date"%>"><%= link_to 'Release Date', movies_path(:sort_type => "release_date"), :class => 'no_decoration',:id => 'release_date_header'%></th>
       <th>More Info</th>
     </tr>
   </thead>
